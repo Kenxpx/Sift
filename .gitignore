@@ -1,0 +1,6 @@
+/bin/
+.DS_Store
+coverage.out
+dist/
+.sift.json
+sift-out/
