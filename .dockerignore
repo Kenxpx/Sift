@@ -1,0 +1,6 @@
+.DS_Store
+bin/
+build/
+coverage.out
+dist/
+sift-out/
