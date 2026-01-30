@@ -334,8 +334,11 @@ func TestSaveError(t *testing.T) {
 	if !strings.Contains(err.Error(), "cache:") || !strings.Contains(err.Error(), path) {
 		t.Errorf("error = %q, want it to name the package and %q", err.Error(), path)
 	}
-	if _, statErr := os.Stat(path); !os.IsNotExist(statErr) {
-		t.Errorf("Stat(%s) = %v, want not-exist", path, statErr)
+	// The path must not exist afterwards. Stat reports "no such file" on
+	// some systems and "not a directory" on others when a parent is a plain
+	// file, so any error means nothing was left behind.
+	if _, statErr := os.Stat(path); statErr == nil {
+		t.Errorf("Stat(%s) = nil, want the failed write to leave nothing behind", path)
 	}
 	// The failed write left the existing file alone.
 	kept, readErr := os.ReadFile(blocker)
